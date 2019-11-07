@@ -21,7 +21,7 @@ import java.util.List;
  * Created by alexm on 07.11.2019.
  */
 public class TrackingService {
-    private final static Logger logger = Logger.getLogger(UserService.class);
+    private final static Logger logger = Logger.getLogger(TrackingService.class);
     private volatile static TrackingService instance;
 //    private DaoFactory mySqlFactory;
     private TrackingDAO trackingDAO;
