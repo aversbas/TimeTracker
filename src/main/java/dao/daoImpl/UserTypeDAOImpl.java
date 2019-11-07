@@ -1,5 +1,6 @@
 package dao.daoImpl;
 
+import connection.Datasource;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.QueriesDB;
@@ -22,6 +23,8 @@ public class UserTypeDAOImpl implements UserTypeDAO {
     private static final Logger logger = Logger.getLogger(UserTypeDAOImpl.class);
 
     private volatile static UserTypeDAOImpl instance;
+
+    private Datasource datasource;
 
     private UserTypeDAOImpl() {
     }
@@ -46,20 +49,17 @@ public class UserTypeDAOImpl implements UserTypeDAO {
      * This method creates and inserts an entity in a database table.
      *
      * @param userType   - the current user which has been created.
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      */
     @Override
-    public void add(UserType userType, Connection connection) throws DAOException {
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(QueriesDB.ADD_USER_TYPE);
+    public void add(UserType userType) throws DAOException {
+
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.ADD_USER_TYPE)){
             statement.setString(1, userType.getUserType());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeStatement(statement);
         }
     }
 
@@ -67,21 +67,18 @@ public class UserTypeDAOImpl implements UserTypeDAO {
      * This method updates an existing record (row) in a database table.
      *
      * @param userType   - the current entity of user which will be updated.
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      */
     @Override
-    public void update(UserType userType, Connection connection) throws DAOException {
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(QueriesDB.UPDATE_USER_TYPE_BY_ID);
+    public void update(UserType userType) throws DAOException {
+
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.UPDATE_USER_TYPE_BY_ID)){
             statement.setString(1, userType.getUserType());
-            statement.setString(2, userType.getUserTypeId().toString());
+            statement.setString(2, String.valueOf(userType.getUserTypeId()));
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeStatement(statement);
         }
     }
 
@@ -89,20 +86,17 @@ public class UserTypeDAOImpl implements UserTypeDAO {
      * This method deletes an existing record (row) in a database table.
      *
      * @param id         - id number of the current entity which will be deleted.
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      */
     @Override
-    public void deleteById(int id, Connection connection) throws DAOException {
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(QueriesDB.DELETE_USER_TYPE_BY_ID);
+    public void deleteById(int id) throws DAOException {
+
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.DELETE_USER_TYPE_BY_ID)){
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeStatement(statement);
         }
     }
 
@@ -110,16 +104,15 @@ public class UserTypeDAOImpl implements UserTypeDAO {
      * This method reads and returns information from a record (row) of a database table.
      *
      * @param id         - id number of the record (row) in the database table..
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - an entity from a database table according to the incoming id number.
      */
     @Override
-    public UserType getById(int id, Connection connection) throws DAOException {
-        PreparedStatement statement = null;
+    public UserType getById(int id) throws DAOException {
+
         ResultSet resultSet = null;
         UserType userType = new UserType();
-        try {
-            statement = connection.prepareStatement(QueriesDB.GET_USER_TYPE_BY_ID);
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.GET_USER_TYPE_BY_ID)){
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -128,9 +121,6 @@ public class UserTypeDAOImpl implements UserTypeDAO {
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeResultSet(resultSet);
-            ConnectionPool.closeStatement(statement);
         }
         return userType;
     }
@@ -138,16 +128,15 @@ public class UserTypeDAOImpl implements UserTypeDAO {
      * This method reads and returns information from a record (row) of a database table.
      *
      * @param type         - type of the record (row) in the database table..
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - an entity from a database table according to the incoming id number.
      */
     @Override
-    public UserType getByType(String type, Connection connection) throws DAOException {
-        PreparedStatement statement = null;
+    public UserType getByType(String type) throws DAOException {
+
         ResultSet resultSet = null;
         UserType userType = new UserType();
-        try {
-            statement = connection.prepareStatement(QueriesDB.GET_USER_TYPE_BY_TYPE);
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.GET_USER_TYPE_BY_TYPE)){
             statement.setString(1, type);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -156,9 +145,6 @@ public class UserTypeDAOImpl implements UserTypeDAO {
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeResultSet(resultSet);
-            ConnectionPool.closeStatement(statement);
         }
         return userType;
     }
@@ -166,16 +152,15 @@ public class UserTypeDAOImpl implements UserTypeDAO {
     /**
      * This method reads and returns information from all records (rows) of a database table.
      *
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - list of all entities from a database table.
      */
     @Override
-    public List<UserType> getAll(Connection connection) throws DAOException {
-        PreparedStatement statement = null;
+    public List<UserType> getAll() throws DAOException {
+
         ResultSet resultSet = null;
         List<UserType> users = new ArrayList<>();
-        try {
-            statement = connection.prepareStatement(QueriesDB.GET_ALL_USERS_TYPE);
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.GET_ALL_USERS_TYPE)){
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 users.add(createUserType(resultSet, new UserType()));
@@ -183,9 +168,6 @@ public class UserTypeDAOImpl implements UserTypeDAO {
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeResultSet(resultSet);
-            ConnectionPool.closeStatement(statement);
         }
         return users;
     }
