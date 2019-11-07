@@ -28,12 +28,12 @@ public class ActivityDAOImpl implements ActivityDAO {
     }
 
     @Override
-    public void add(Activity entity, Connection connection) throws DAOException {
+    public void add(Activity entity) throws DAOException {
 
     }
 
     @Override
-    public List<Activity> getAll(Connection connection) throws DAOException {
+    public List<Activity> getAll() throws DAOException {
         return null;
     }
 

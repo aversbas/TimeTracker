@@ -36,7 +36,7 @@ public class Datasource {
             /**
              * Get the data source for the MySQL to request a connection.
              */
-            dataSource = (DataSource) envContext.lookup("jdbc/time_tracking");
+            dataSource = (DataSource) envContext.lookup("jdbc/timeTracker");
         } catch (NamingException e) {
             LOGGER.error("Naming exception in Datasource");
         }
@@ -61,5 +61,15 @@ public class Datasource {
             LOGGER.error("Exception in getting connection");
         }
         return connection;
+    }
+
+    public void closeConnection(Connection connection){
+        try{
+            if(connection != null){
+                connection.close();
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 }

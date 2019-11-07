@@ -227,8 +227,8 @@ public class UserDAOImpl  implements UserDAO {
     public User createUser(ResultSet resultSet, User user) throws SQLException {
         user.setUserId(resultSet.getLong(Parameters.USER_ID_DB));
         user.setFirstName(resultSet.getString(Parameters.FIRST_NAME_DB));
-        user.setEmail(resultSet.getString(Parameters.EMAIL_DB));
         user.setSecondName(resultSet.getString(Parameters.SURNAME_DB));
+        user.setEmail(resultSet.getString(Parameters.EMAIL_DB));
         user.setLogin(resultSet.getString(Parameters.LOGIN));
         user.setPassword(resultSet.getString(Parameters.PASSWORD));
         user.setUserType(new UserType(resultSet.getLong(Parameters.USER_TYPE_ID_DB)

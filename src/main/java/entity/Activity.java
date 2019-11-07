@@ -1,8 +1,12 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Activity implements Serializable {
+
+  public static List<String> activityNameList = new ArrayList<>();
 
   private Long activityId;
   private String description;
@@ -30,6 +34,10 @@ public class Activity implements Serializable {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public static List<String> getActivityNameList() {
+    return activityNameList;
   }
 
   @Override
