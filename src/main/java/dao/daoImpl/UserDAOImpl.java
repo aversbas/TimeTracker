@@ -110,17 +110,16 @@ public class UserDAOImpl  implements UserDAO {
              PreparedStatement statement = connection.prepareStatement(QueriesDB.UPDATE_USER_BY_ID)){
 
             statement.setString(1, user.getFirstName());
-            statement.setString(2, user.getSurName());
-            statement.setString(3, user.getLogin());
-            statement.setString(4, user.getPassword());
-            statement.setString(5, String.valueOf(user.getUserType()));
-            statement.setInt(6, user.getUserId());
+            statement.setString(2, user.getSecondName());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getLogin());
+            statement.setString(5, user.getPassword());
+            statement.setString(6, String.valueOf(user.getUserType()));
+            statement.setLong(7, user.getUserId());
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeStatement(statement);
         }
     }
 
@@ -128,20 +127,17 @@ public class UserDAOImpl  implements UserDAO {
      * This method deletes an existing record (row) in a database table.
      *
      * @param id         - id number of the current entity which will be deleted.
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      */
     @Override
-    public void deleteById(int id, Connection connection) throws DAOException {
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(QueriesDB.DELETE_USER_BY_ID);
+    public void deleteById(int id) throws DAOException {
+
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.DELETE_USER_BY_ID)){
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeStatement(statement);
         }
     }
 
@@ -149,16 +145,15 @@ public class UserDAOImpl  implements UserDAO {
      * This method reads data from <i>users</i> database table, creates and returns User object according to the entered login.
      *
      * @param login      - entered <i>login</i>.
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - User object.
      */
     @Override
-    public User getByLogin(String login, Connection connection) throws DAOException {
-        PreparedStatement statement = null;
+    public User getByLogin(String login) throws DAOException {
+
         ResultSet resultSet = null;
         User user = new User();
-        try {
-            statement = connection.prepareStatement(QueriesDB.GET_USER_BY_LOGIN);
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.GET_USER_BY_LOGIN)){
             statement.setString(1, login);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -167,9 +162,6 @@ public class UserDAOImpl  implements UserDAO {
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeResultSet(resultSet);
-            ConnectionPool.closeStatement(statement);
         }
         return user;
     }
@@ -178,16 +170,16 @@ public class UserDAOImpl  implements UserDAO {
      * This method reads and returns information from a record (row) of a database table.
      *
      * @param id         - id number of the record (row) in the database table..
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - an entity from a database table according to the incoming id number.
      */
     @Override
-    public User getById(String id, Connection connection) throws DAOException {
-        PreparedStatement statement = null;
+    public User getById(String id) throws DAOException {
+
         ResultSet resultSet = null;
         User user = new User();
-        try {
-            statement = connection.prepareStatement(QueriesDB.GET_USER_BY_ID);
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.GET_USER_BY_ID)){
+
             statement.setString(1, id);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -196,9 +188,6 @@ public class UserDAOImpl  implements UserDAO {
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeResultSet(resultSet);
-            ConnectionPool.closeStatement(statement);
         }
         return user;
     }
@@ -206,16 +195,15 @@ public class UserDAOImpl  implements UserDAO {
     /**
      * This method reads and returns information from all records (rows) of a database table.
      *
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - list of all entities from a database table.
      */
     @Override
-    public List<User> getAll(Connection connection) throws DAOException {
-        PreparedStatement statement = null;
+    public List<User> getAll() throws DAOException {
+
         ResultSet resultSet = null;
         List<User> users = new ArrayList<>();
-        try {
-            statement = connection.prepareStatement(QueriesDB.GET_ALL_USERS);
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.GET_ALL_USERS)){
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 users.add(createUser(resultSet, new User()));
@@ -223,9 +211,6 @@ public class UserDAOImpl  implements UserDAO {
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeResultSet(resultSet);
-            ConnectionPool.closeStatement(statement);
         }
         return users;
     }
@@ -242,6 +227,7 @@ public class UserDAOImpl  implements UserDAO {
     public User createUser(ResultSet resultSet, User user) throws SQLException {
         user.setUserId(resultSet.getLong(Parameters.USER_ID_DB));
         user.setFirstName(resultSet.getString(Parameters.FIRST_NAME_DB));
+        user.setEmail(resultSet.getString(Parameters.EMAIL_DB));
         user.setSecondName(resultSet.getString(Parameters.SURNAME_DB));
         user.setLogin(resultSet.getString(Parameters.LOGIN));
         user.setPassword(resultSet.getString(Parameters.PASSWORD));
@@ -254,17 +240,16 @@ public class UserDAOImpl  implements UserDAO {
      * This method check the uniqueness of the user.
      *
      * @param login      - entered <i>login</i>.
-     * @param connection - the current connection to a database. Transmitted from the service module to provide transactions.
      * @return - boolean value of the condition.
      * @throws DAOException
      */
     @Override
-    public boolean checkUniqueUser(String login, Connection connection) throws DAOException {
+    public boolean checkUniqueUser(String login) throws DAOException {
+
         boolean isUniqueUser = true;
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            statement = connection.prepareStatement(QueriesDB.GET_USER_BY_LOGIN);
+        try (Connection connection = datasource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(QueriesDB.GET_USER_BY_LOGIN)){
             statement.setString(1, login);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -273,9 +258,6 @@ public class UserDAOImpl  implements UserDAO {
         } catch (SQLException e) {
             logger.error(MessageConstants.EXECUTE_QUERY_ERROR, e);
             throw new DAOException(MessageConstants.EXECUTE_QUERY_ERROR, e);
-        } finally {
-            ConnectionPool.closeResultSet(resultSet);
-            ConnectionPool.closeStatement(statement);
         }
         return isUniqueUser;
     }

@@ -67,5 +67,6 @@ public class Parameters {
     public static final String USER_REQUEST_ID_DB = "user_request_id";
     public static final String USER_REQUEST_NAME_DB = "user_request_name";
     public static final String FIRST_NAME_DB = "first_name";
-    public static final String SURNAME_DB = "sur_name";
+    public static final String EMAIL_DB = "email";
+    public static final String SURNAME_DB = "second_name";
 }
