@@ -7,10 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-  <head>
-    <title>$Title$</title>
-  </head>
-  <body>
-  $END$
-  </body>
+<head>
+  <title>Title</title>
+</head>
+<body>
+<!--Start page redirects to the Login Page-->
+<jsp:forward page="/web/pages/login.jsp"/>
+</body>
 </html>

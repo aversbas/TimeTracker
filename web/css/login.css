@@ -1,0 +1,19 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+    background:oldlace;
+    background-size: cover;
+}
+/*don't work*/
+.wrapperLoginForm {
+    position: absolute;
+    width:200px;
+    height:100px;
+}
+.inputElement {
+    opacity: 0.8;
+}
+.errorMessage {
+    color: firebrick;
+}

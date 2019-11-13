@@ -3,4 +3,49 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
+    <resource-ref>
+        <description>DB Connection</description>
+        <res-ref-name>jdbc/timeTracker</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
+
+    <!--Servlet description startTime-->
+    <servlet>
+        <servlet-name>controller</servlet-name>
+        <servlet-class>servlet.Controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>controller</servlet-name>
+        <url-pattern>/controller</url-pattern>
+    </servlet-mapping>
+    <!--Servlet description end-->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <!--Filter descripption startTime-->
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>filter.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <servlet-name>controller</servlet-name>
+    </filter-mapping>
+    <!--Filter description end-->
+
+    <!--Error jsp page startTime-->
+    <error-page>
+        <location>/pages/error.jsp</location>
+    </error-page>
+    <!--Error jsp page end-->
+
+    <!--Start page description startTime-->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <!--Start page description end-->
+
 </web-app>
