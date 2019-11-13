@@ -38,7 +38,7 @@
 
     <!--Error jsp page startTime-->
     <error-page>
-        <location>/pages/error.jsp</location>
+        <location>/web/pages/error.jsp</location>
     </error-page>
     <!--Error jsp page end-->
 
