@@ -13,12 +13,12 @@ public class Parameters {
     public static final String USER_SUR_NAME = "secondName";
     public static final String TRACKING_ID = "trackingId";
     public static final String TRACKING_LIST = "trackingList";
-    public static final String USER_TYPE = "userType";
+    public static final String USER_TYPE = "user_type_name";
     public static final String ACTIVITY = "activity";
     public static final String ACTIVITY_LIST = "activityList";
     public static final String ACTIVITY_ADMIN_LIST = "activityAdminList";
     public static final String ACTIVITY_NAME = "description";
-    public static final String USER_TYPE_ID = "userTypeId";
+    public static final String USER_TYPE_ID = "user_type_id";
     public static final String ACTIVITY_ID = "activityId";
     public static final String COMMAND = "command";
     public static final String LOGIN = "login";
