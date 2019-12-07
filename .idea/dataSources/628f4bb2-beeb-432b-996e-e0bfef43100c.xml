@@ -119,7 +119,7 @@
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="38" parent="13" name="user_type">
+    <column id="38" parent="13" name="user_type_id">
       <Position>7</Position>
       <DataType>int(11)|0</DataType>
     </column>
@@ -141,7 +141,7 @@
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="43" parent="14" name="user_type">
+    <column id="43" parent="14" name="user_type_name">
       <Position>2</Position>
       <DataType>varchar(45)|0</DataType>
       <NotNull>1</NotNull>

@@ -10,13 +10,14 @@ public class QueriesDB {
             "    user_type.user_type_id  WHERE login = ? ;";
     public static final String GET_USER_BY_ID = "SELECT * FROM user JOIN user_type ON user.user_type_id =" +
             " user_type.user_type_id WHERE user_id = ?;";
-    public static final String ADD_USER_CLIENT = "INSERT INTO user (first_name, sur_name, login, password, user_type_id)" +
+    public static final String ADD_USER_CLIENT = "INSERT INTO user (first_name, second_name, login, password, user_type_id)" +
             "VALUES (?, ?, ?, ?, ?);";
     public static final String DELETE_USER_BY_ID = "DELETE FROM user WHERE id = ?;";
-    public static final String UPDATE_USER_BY_ID = "UPDATE user SET first_name = ?, sur_name = ? " +
+    public static final String UPDATE_USER_BY_ID = "UPDATE user SET first_name = ?, second_name = ? " +
             "login = ?, password = ?, user_type = ?  WHERE user_id = ?;";
     public static final String GET_ALL_USERS = "SELECT * FROM user JOIN user_type ON user.user_type_id = \n" +
             "    user_type.user_type_id;";
+    public static final String GET_ALL_USERSS = "SELECT * FROM user";
     public static final String GET_ALL_CLIENTS = "SELECT * FROM user JOIN user_type ON user.user_type_id = \n" +
             "    user_type.user_type_id WHERE user_type_id = 2;";
     /*Queries to work with userType database table.*/
@@ -28,11 +29,11 @@ public class QueriesDB {
     public static final String GET_USER_TYPE_BY_TYPE = "SELECT * FROM user_type WHERE user_type_name = ?;";
 
     /*Queries to work with activity database table.*/
-    public static final String ADD_ACTIVITY = "INSERT INTO activity (activity_name) VALUES (?);";
-    public static final String UPDATE_ACTIVITY_BY_ID = "UPDATE activity SET activity_name=? WHERE activity_id=?;";
+    public static final String ADD_ACTIVITY = "INSERT INTO activity (description) VALUES (?);";
+    public static final String UPDATE_ACTIVITY_BY_ID = "UPDATE activity SET description=? WHERE activity_id=?;";
     public static final String DELETE_ACTIVITY_BY_ID = "DELETE FROM activity WHERE activity_id = ?;";
     public static final String GET_ACTIVITY_BY_ID = "SELECT * FROM activity WHERE activity_id = ?;";
-    public static final String GET_ACTIVITY_BY_NAME = "SELECT * FROM activity WHERE activity_name = ?;";
+    public static final String GET_ACTIVITY_BY_NAME = "SELECT * FROM activity WHERE description = ?;";
     public static final String GET_ALL_ACTIVITIES = "SELECT * FROM activity;";
     /*Queries to work with tracking database table.*/
     public static final String DELETE_TRACKING_BY_USER_ID = "DELETE FROM tracking WHERE user_id = ?;";

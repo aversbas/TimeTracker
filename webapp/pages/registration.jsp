@@ -17,7 +17,7 @@
                 </tr>
                 <tr>
                     <td>Surname:</td>
-                    <td><input class="inputElement" type="text" name="surname" value=""/></td>
+                    <td><input class="inputElement" type="text" name="secondName" value=""/></td>
                 </tr>
                 <tr>
                     <td>Login:</td>

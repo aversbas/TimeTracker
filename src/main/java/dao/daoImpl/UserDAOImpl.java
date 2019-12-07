@@ -1,6 +1,9 @@
 package dao.daoImpl;
 
+import connection.ConnectionFactory;
+import connection.ConnectionHolder;
 import connection.Datasource;
+import connection.TransactionManager;
 import constants.MessageConstants;
 import constants.Parameters;
 import constants.QueriesDB;
@@ -22,12 +25,13 @@ import java.util.List;
  */
 public class UserDAOImpl  implements UserDAO {
     private static final Logger logger = Logger.getLogger(UserDAOImpl.class);
+    private final TransactionManager TRANSACTION_MANAGER = TransactionManager.getInstance();
 
     private volatile static UserDAOImpl instance;
 
     private Datasource datasource;
 
-    private UserDAOImpl() {
+    public UserDAOImpl() {
     }
 
     /**
@@ -177,7 +181,7 @@ public class UserDAOImpl  implements UserDAO {
 
         ResultSet resultSet = null;
         User user = new User();
-        try (Connection connection = datasource.getConnection();
+        try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(QueriesDB.GET_USER_BY_ID)){
 
             statement.setString(1, id);
@@ -200,10 +204,10 @@ public class UserDAOImpl  implements UserDAO {
     @Override
     public List<User> getAll() throws DAOException {
 
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         List<User> users = new ArrayList<>();
-        try (Connection connection = datasource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(QueriesDB.GET_ALL_USERS)){
+        try (ConnectionHolder connectionHolder = TRANSACTION_MANAGER.getConnection();
+             PreparedStatement statement = connectionHolder.prepareStatement(QueriesDB.GET_ALL_USERS)){
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 users.add(createUser(resultSet, new User()));

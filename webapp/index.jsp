@@ -12,6 +12,6 @@
 </head>
 <body>
 <!--Start page redirects to the Login Page-->
-<jsp:forward page="/web/pages/login.jsp"/>
+<jsp:forward page="/webapp/pages/login.jsp"/>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="t" tagdir="/web/WEB-INF/tags" %>
+<%@taglib prefix="t" tagdir="/webapp/WEB-INF/tags" %>
 
 <t:genericpage>
     <jsp:attribute name="header">

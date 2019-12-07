@@ -61,7 +61,7 @@ public class Parameters {
     public static final String USER_TYPE_DB = "user_type";
     public static final String USER_TYPE_ID_DB = "user_type_id";
     public static final String ACTIVITY_ID_DB = "activity_id";
-    public static final String ACTIVITY_NAME_DB = "activity_name";
+    public static final String ACTIVITY_NAME_DB = "description";
     public static final String STATUS_ID_DB = "status_id";
     public static final String STATUS_NAME_DB = "status_name";
     public static final String USER_REQUEST_ID_DB = "user_request_id";

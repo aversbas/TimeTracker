@@ -1,7 +1,17 @@
 package servlet;
 
+import commands.BasicCommand;
+import commands.factory.CommandsFactory;
+import constants.PathPageConstants;
+import manager.ConfigManagerPages;
+import session.SessionLogic;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -32,29 +42,29 @@ public class Controller extends HttpServlet {
      *                          <p>
      *                          Created by Yaroslav Bodyak on 11.12.2018.
      */
-//    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        HttpSession session = SessionLogic.getSession(request);
-//        if (SessionLogic.isSessionNotAlive(session)) {
-//            String page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.SESSION_PAGE_PATH);
-//            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-//            dispatcher.forward(request, response);
-//        } else {
-//            CommandsFactory factory = CommandsFactory.getInstance();
-//            BasicCommand command = factory.defineCommand(request);
-//            String page = command.execute(request);
-//            if (page != null) {
-//                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-//                dispatcher.forward(request, response);
-//            } else {
-//                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.INDEX_PAGE_PATH);
-//                response.sendRedirect(request.getContextPath() + page);
-//                flag = true;
-//            }
-//        }
-//
-//
-//    }
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = SessionLogic.getSession(request);
+        if (SessionLogic.isSessionNotAlive(session)) {
+            String page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.SESSION_PAGE_PATH);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+            dispatcher.forward(request, response);
+        } else {
+            CommandsFactory factory = CommandsFactory.getInstance();
+            BasicCommand command = factory.defineCommand(request);
+            String page = command.execute(request);
+            if (page != null) {
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+                dispatcher.forward(request, response);
+            } else {
+                page = ConfigManagerPages.getInstance().getProperty(PathPageConstants.INDEX_PAGE_PATH);
+                response.sendRedirect(request.getContextPath() + page);
+                flag = true;
+            }
+        }
+
+
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
@@ -67,11 +77,11 @@ public class Controller extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException      if an I/O error occurs
      */
-//    @Override
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        processRequest(request, response);
-//    }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
     /**
      * Handles the HTTP
@@ -82,11 +92,11 @@ public class Controller extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException      if an I/O error occurs
      */
-//    @Override
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        processRequest(request, response);
-//    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
     /**
      * Returns a short description of the servlet.

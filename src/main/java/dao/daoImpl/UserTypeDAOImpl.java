@@ -1,5 +1,6 @@
 package dao.daoImpl;
 
+import connection.ConnectionFactory;
 import connection.Datasource;
 import constants.MessageConstants;
 import constants.Parameters;
@@ -26,7 +27,7 @@ public class UserTypeDAOImpl implements UserTypeDAO {
 
     private Datasource datasource;
 
-    private UserTypeDAOImpl() {
+    public UserTypeDAOImpl() {
     }
 
     /**
@@ -159,7 +160,7 @@ public class UserTypeDAOImpl implements UserTypeDAO {
 
         ResultSet resultSet = null;
         List<UserType> users = new ArrayList<>();
-        try (Connection connection = datasource.getConnection();
+        try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement statement = connection.prepareStatement(QueriesDB.GET_ALL_USERS_TYPE)){
             resultSet = statement.executeQuery();
             while (resultSet.next()) {

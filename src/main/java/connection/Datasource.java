@@ -11,7 +11,6 @@ import java.sql.SQLException;
 
 
 public class Datasource {
-
     private static final Logger LOGGER = Logger.getLogger(Datasource.class);
     private static Datasource instance;
 
@@ -32,13 +31,13 @@ public class Datasource {
              * Get Context object for all environment naming (JNDI), such as
              * Resources configured for this web application.
              */
-            Context envContext = (Context) initContext.lookup("java:comp/env");
+            Context envContext = (Context) initContext.lookup("java:comp/env/");
             /**
              * Get the data source for the MySQL to request a connection.
              */
             dataSource = (DataSource) envContext.lookup("jdbc/timeTracker");
         } catch (NamingException e) {
-            LOGGER.error("Naming exception in Datasource");
+            LOGGER.error(e);
         }
     }
 
